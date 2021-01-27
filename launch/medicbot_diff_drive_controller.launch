@@ -14,8 +14,8 @@
     <remap from="base_controller/odom" to="odom"/>	
     <remap from="base_controller/cmd_vel" to="cmd_vel"/>	
     <!-- Load hardware interface -->
-    <node name="medicbot_hw_main" pkg="medicbot_control" type="medicbot_hw_main"
-          output="log" launch-prefix="$(arg launch_prefix)"/>
+    <node name="medicbot_hw_interface_node" pkg="medicbot_control" type="medicbot_hw_interface_node"
+          output="screen"  launch-prefix="$(arg launch_prefix)"/>
 
     <!-- Load controller manager -->
     <node name="ros_control_controller_manager" pkg="controller_manager" type="controller_manager" respawn="false" output="log" args="spawn joint_state_controller base_controller" />
