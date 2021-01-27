@@ -22,10 +22,10 @@ void setup()
   pinMode(in4, OUTPUT);
 
   digitalWrite(in1, LOW);
-  digitalWrite(in2, HIGH);
+  digitalWrite(in2, LOW);
 
   digitalWrite(in3, LOW);
-  digitalWrite(in4, HIGH);
+  digitalWrite(in4, LOW);
 }
 
 
@@ -55,8 +55,7 @@ void setMotorVel(String inputString) {
     digitalWrite(in2, LOW);
     left_motor_vel = -left_motor_vel;
   }
-  else if (left_motor_vel > 0) {
-    // Set Motor A forward
+  else if (left_motor_vel > 0) { // Set Motor A forward
     digitalWrite(in1, LOW);
     digitalWrite(in2, HIGH);
     left_motor_vel = left_motor_vel;
@@ -79,8 +78,8 @@ void setMotorVel(String inputString) {
   analogWrite(enB, right_motor_vel); // Send PWM signal to motor B
 }
 
-Encoder leftEnc(18, 19);
-Encoder rightEnc(2, 11);
+Encoder rightEnc(18, 19);
+Encoder leftEnc(2, 11);
 
 long oldPositionL  = 0;
 long oldPositionR  = 0;
