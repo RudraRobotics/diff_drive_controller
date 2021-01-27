@@ -47,7 +47,7 @@ base_controller:
       has_velocity_limits    : true
       max_velocity           : 0.22 # m/s
       min_velocity           : -0.22 # m/s
-      has_acceleration_limits: true
+      has_acceleration_limits: false
       max_acceleration       : 0.05  # m/s^2
       min_acceleration       : -0.05 # m/s^2
       has_jerk_limits        : false
@@ -57,7 +57,7 @@ base_controller:
       has_velocity_limits    : true
       max_velocity           : 0.7 # rad/s
       min_velocity           : -0.7 # rad/s
-      has_acceleration_limits: true
+      has_acceleration_limits: false
       max_acceleration       : 0.3  # rad/s^2
       min_acceleration       : -0.3
       has_jerk_limits        : false

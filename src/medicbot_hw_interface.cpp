@@ -104,8 +104,8 @@ void RRBotHWInterface::read(ros::Duration &elapsed_time)
     if(result.size()==2) {
     	    int curr_left_wheel_pos = atof(result[0].c_str());
 	    int curr_right_wheel_pos = atof(result[1].c_str());
-	    int delta_left_wheel_pos =  prev_left_wheel_pos - curr_left_wheel_pos;
-	    int delta_right_wheel_pos = prev_right_wheel_pos - curr_right_wheel_pos;
+	    int delta_left_wheel_pos =  curr_left_wheel_pos - prev_left_wheel_pos;
+	    int delta_right_wheel_pos = curr_right_wheel_pos - prev_right_wheel_pos;
 	    double dt = elapsed_time.toSec();
 	    joint_position_[0] += delta_left_wheel_pos * min_ang; 
 	    joint_velocity_[0] = (delta_left_wheel_pos * min_ang)/dt;

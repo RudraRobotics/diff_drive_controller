@@ -15,8 +15,8 @@ include_directories(
 )
 
 set(ARDUINO_SRCS
-        libs/arduino_serial/arduino_serial.c
-        libs/arduino_serial/rs232.c
+	libs/arduino_serial/arduino_serial.c
+	libs/arduino_serial/rs232.c
 )
 add_library(arduino_serial SHARED ${ARDUINO_SRCS})
 
