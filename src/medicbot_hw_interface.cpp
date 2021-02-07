@@ -84,10 +84,9 @@ RRBotHWInterface::RRBotHWInterface(ros::NodeHandle &nh_, urdf::Model *urdf_model
     my_pid1_.init(ros::NodeHandle(nhp1_, "my_pid1"), false);
     my_pid2_.init(ros::NodeHandle(nhp2_, "my_pid2"), false);
 
-    min_ang = 0.00119361423;
+    min_ang = 0.00315167802;
     prev_right_wheel_pos = 0;
     prev_left_wheel_pos = 0;
-    max_pwm_to_max_vel_radio = 80.7501211252;    
     Setup();
 }
 
@@ -111,7 +110,7 @@ void RRBotHWInterface::read(ros::Duration &elapsed_time)
 	    joint_velocity_[0] = (delta_left_wheel_pos * min_ang)/dt;
 	    joint_position_[1] += delta_right_wheel_pos * min_ang; 
 	    joint_velocity_[1] = (delta_right_wheel_pos * min_ang)/dt;
-	    std::cout<<"feedback="<<joint_velocity_[0]<<"\t"<<joint_velocity_[1]<<std::endl;
+	    // std::cout<<"feedback="<<joint_velocity_[0]<<"\t"<<joint_velocity_[1]<<std::endl;
 	    prev_left_wheel_pos = curr_left_wheel_pos;
 	    prev_right_wheel_pos = curr_right_wheel_pos;
 
@@ -126,7 +125,7 @@ void RRBotHWInterface::write(ros::Duration &elapsed_time)
   ros::Duration dt = tnow - last_cmd_time_;
   double error1 = joint_velocity_command_[0] - joint_velocity_[0];
   double error2 = joint_velocity_command_[1] - joint_velocity_[1];
-  std::cout<<"cmd="<<joint_velocity_command_[0]<<"\t"<<joint_velocity_command_[1]<<std::endl;
+  // std::cout<<"cmd="<<joint_velocity_command_[0]<<"\t"<<joint_velocity_command_[1]<<std::endl;
   double joint1_out_pow = my_pid1_.computeCommand(error1, dt);
   double joint2_out_pow = my_pid2_.computeCommand(error2, dt);
   int pwm1 = static_cast<int>(joint1_out_pow);
@@ -145,7 +144,7 @@ void RRBotHWInterface::write(ros::Duration &elapsed_time)
   }
   const char *res = pwm_datas.c_str(); 
   if(pwm_datas.length()==16) {
-    Write(res); std::cout<<"pwm="<<res<<std::endl; 
+    Write(res); //std::cout<<"pwm="<<res<<std::endl; 
     last_cmd_time_ = tnow;
     ros::Duration(0.01).sleep();
   }

@@ -78,9 +78,6 @@ public:
   float min_ang;
   int prev_right_wheel_pos;
   int prev_left_wheel_pos;
-  // 99/14.2105 where 99 is max digt which can single motor pwm has, it wil be converted to [0,255] range in arduino due to buffer limitations
-  // and 14.2105 is the maximum angular velocity calculated as w = v / r where v is max linear velocity and r is radious of wheel which we defined in diff drive config file
-  double max_pwm_to_max_vel_radio;  
   ros::Time time;
 private:
   ros::NodeHandle nhp1_, nhp2_;
