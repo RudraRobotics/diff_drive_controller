@@ -37,7 +37,7 @@
            For a more detailed simulation example, see sim_hw_interface.cpp
 */
 
-#include <medicbot_control/medicbot_hw_interface.h>
+#include <robot_control/robot_hw_interface.h>
 #include <exception>
 #include <algorithm>
 #include <iostream>

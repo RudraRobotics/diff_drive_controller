@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- GDB functionality -->
+  <arg name="debug" default="false" />
+  <arg unless="$(arg debug)" name="launch_prefix" value="" />
+  <arg     if="$(arg debug)" name="launch_prefix" value="gdb --ex run --args" />
+
+  <!-- Load example URDF -->
+  <param name="robot_description" command="$(find xacro)/xacro '$(find turtlebot3_description)/urdf/turtlebot3_burger.urdf.xacro'" />
+
+    <!-- Load controller settings -->
+    <rosparam file="$(find robot_control)/config/robot_diff_drive_controller.yaml" command="load"/>
+
+    <remap from="base_controller/odom" to="odom"/>	
+    <remap from="base_controller/cmd_vel" to="cmd_vel"/>	
+    <!-- Load hardware interface -->
+    <node name="hw_interface_node" pkg="robot_control" type="hw_interface_node"
+          output="screen"  launch-prefix="$(arg launch_prefix)"/>
+
+    <!-- Load controller manager -->
+    <node name="ros_control_controller_manager" pkg="controller_manager" type="controller_manager" respawn="false" output="log" args="spawn joint_state_controller base_controller" />
+
+    <!-- Convert joint states to /tf tranforms -->
+    <!--node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
+	    <param name="publish_frequency" type="double" value="50.0" />
+    </node-->
+</launch>

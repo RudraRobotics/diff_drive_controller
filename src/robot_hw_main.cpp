@@ -33,64 +33,30 @@
  *********************************************************************/
 
 /* Author: Dave Coleman
-   Desc:   Example ros_control hardware interface blank template for the RRBot
-           For a more detailed simulation example, see sim_hw_interface.h
+   Desc:   Example ros_control main() entry point for controlling robots in ROS
 */
 
-#ifndef RRBOT_CONTROL__RRBOT_HW_INTERFACE_H
-#define RRBOT_CONTROL__RRBOT_HW_INTERFACE_H
+#include <ros_control_boilerplate/generic_hw_control_loop.h>
+#include <robot_control/robot_hw_interface.h>
 
-#include <ros_control_boilerplate/generic_hw_interface.h>
-#include <control_toolbox/pid.h>
-// For Serial Communication with arduino board
-extern "C" {
-  #include "arduino_serial.h"
+int main(int argc, char** argv)
+{
+  ros::init(argc, argv, "rrbot_hw_interface");
+  ros::NodeHandle nh;
+
+  // NOTE: We run the ROS loop in a separate thread as external calls such
+  // as service callbacks to load controllers can block the (main) control loop
+  ros::AsyncSpinner spinner(2);
+  spinner.start();
+
+  // Create the hardware interface specific to your robot
+  boost::shared_ptr<rrbot_control::RRBotHWInterface> rrbot_hw_interface
+    (new rrbot_control::RRBotHWInterface(nh));
+  rrbot_hw_interface->init();
+
+  // Start the control loop
+  ros_control_boilerplate::GenericHWControlLoop control_loop(nh, rrbot_hw_interface);
+  control_loop.run(); // Blocks until shutdown signal recieved
+
+  return 0;
 }
-
-namespace rrbot_control
-{
-
-/// \brief Hardware interface for a robot
-class RRBotHWInterface : public ros_control_boilerplate::GenericHWInterface
-{
-public:
-  /**
-   * \brief Constructor
-   * \param nh - Node handle for topics.
-   */
-  RRBotHWInterface(ros::NodeHandle& nh, urdf::Model* urdf_model = NULL);
-  ~RRBotHWInterface();
-  /** \brief Read the state from the robot hardware. */
-  virtual void read(ros::Duration &elapsed_time);
-  void ReadState(ros::Duration &elapsed_time);
-  /** \brief Write the command to the robot hardware. */
-  virtual void write(ros::Duration &elapsed_time);
-
-  /** \breif Enforce limits for all values before writing */
-  virtual void enforceLimits(ros::Duration &period);
-
-  // Serial comm specific vars and methods
-  int fd,ret;
-  char red[88];
-
-  // Robot wheel and motion related member variabls
-  float radi;
-  float min_ang;
-  int prev_right_wheel_pos;
-  int prev_left_wheel_pos;
-  ros::Time time;
-private:
-  ros::NodeHandle nhp1_, nhp2_;
-  control_toolbox::Pid my_pid1_;
-  control_toolbox::Pid my_pid2_;
-  ros::Subscriber vel_sub_;
-  ros::Publisher vel_pub_;
-  ros::Time tnow, last_cmd_time_;
-
-  double x_to_control_;
-};  // class
-
-}  // namespace
-
-#endif
-

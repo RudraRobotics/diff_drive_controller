@@ -63,7 +63,7 @@ base_controller:
       has_jerk_limits        : false
       max_jerk               : 0.01 # rad/s^3
 
-medicbot_hw_main:
+robot_hw_main:
    my_pid1:
       p             : 60.0
       i             : 0.0
